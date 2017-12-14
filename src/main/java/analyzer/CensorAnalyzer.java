@@ -40,11 +40,7 @@ public class CensorAnalyzer {
         }
     }
 
-    public static void main(String[] args) {
 
-        CensorAnalyzer censorAnalyzer = new CensorAnalyzer();
-
-    }
     public List<Integer> getNotCensorUsersIds(int chatId, int daysToCheck) throws Exception {
 
         List<Message> message = operator.getMessagesAfter(daysAgo(daysToCheck), chatId);
