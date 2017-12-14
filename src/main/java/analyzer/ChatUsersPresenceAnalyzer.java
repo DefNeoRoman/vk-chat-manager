@@ -2,7 +2,7 @@ package analyzer;
 
 import java.util.Set;
 
-import data.ChatUsersPresence;
+import model.ChatUsersPresence;
 import operator.VkChatOperator;
 
 public class ChatUsersPresenceAnalyzer {

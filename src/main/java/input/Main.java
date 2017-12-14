@@ -1,5 +1,6 @@
 package input;
 
+import analyzer.CensorAnalyzer;
 import analyzer.ChatMessagesAnalyzer;
 import analyzer.ChatUsersPresenceAnalyzer;
 import auth.AuthManager;
@@ -10,12 +11,13 @@ import com.vk.api.sdk.client.VkApiClient;
 import com.vk.api.sdk.client.actors.UserActor;
 import com.vk.api.sdk.httpclient.HttpTransportClient;
 import config.Config;
-import data.ChatUsersActivity;
-import data.ChatUsersPresence;
+import model.ChatUsersActivity;
+import model.ChatUsersPresence;
 import operator.VkChatOperator;
 import report.FileReporter;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class Main {
 	//redirect uri https://oauth.vk.com/blank.html
@@ -49,7 +51,7 @@ public class Main {
 		if (Config.isReportRequired("activity")) {
 			ChatMessagesAnalyzer cma = new ChatMessagesAnalyzer(op);
 			for (int chatId : Config.CHATS) {
-				System.out.println("Collecting users activity data for chat "+chatId);
+				System.out.println("Collecting users activity model for chat "+chatId);
 				ChatUsersActivity cua = cma.getActiveAndPassiveUsers(chatId, Config.REPORT_DAYS);
 				System.out.println("Making a report...");
 				reporter.reportActiveAndPassiveUsers(cua);
@@ -57,9 +59,9 @@ public class Main {
 				System.out.println();
 			}
 		}
-		
+
 		if (Config.isReportRequired("presence")) {
-			System.out.println("Collecting users presence data for chats "+Arrays.toString(Config.CHATS));
+			System.out.println("Collecting users presence model for chats "+Arrays.toString(Config.CHATS));
 			ChatUsersPresenceAnalyzer cupa = new ChatUsersPresenceAnalyzer(op);
 			ChatUsersPresence cup = cupa.getUsersPresence(Config.CHATS);
 			System.out.println("Making a report...");
@@ -67,7 +69,20 @@ public class Main {
 			System.out.println("Done");
 			System.out.println();
 		}
-		
+
+		if (Config.isReportRequired("censor")) {
+			System.out.println("Collecting not censor users in chat "+Arrays.toString(Config.CHATS));
+			CensorAnalyzer censorAnalyzer = new CensorAnalyzer(op);
+			for (int chatId : Config.CHATS) {
+				System.out.println("Collecting users activity model for chat "+chatId);
+				List<Integer> ids = censorAnalyzer.getNotCensorUsersIds(chatId, Config.REPORT_DAYS);
+				System.out.println("Making a report...");
+				reporter.reportNotCensorUsers(ids);
+			}
+
+			System.out.println("Done");
+			System.out.println();
+		}
 		System.out.println("Check reports directory for results");
 	}	
 }

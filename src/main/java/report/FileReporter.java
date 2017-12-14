@@ -11,9 +11,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import input.Utils;
-import data.ChatUsersActivity;
-import data.ChatUsersPresence;
-import data.UserPresence;
+import model.ChatUsersActivity;
+import model.ChatUsersPresence;
+import model.UserPresence;
 import operator.VkChatOperator;
 import report.data.TableSettings;
 
@@ -134,5 +134,11 @@ public class FileReporter {
 				String.format("%s - %s.txt", prefix, Utils.dateTimeForFileName(reportDate)));
 		PrintStream filePrintStream = new PrintStream(outputFile, "UTF-8");
 		return filePrintStream;
+	}
+
+	public void reportNotCensorUsers(List<Integer> ids) throws Exception {
+		Date reportDate = new Date();
+		PrintStream stream = createPrintStream("censor", "notCensorListIds", reportDate);
+		ids.forEach(id -> stream.print(id + "\n"));
 	}
 }

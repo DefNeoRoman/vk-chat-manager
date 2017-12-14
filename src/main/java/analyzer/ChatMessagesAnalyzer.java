@@ -3,7 +3,7 @@ package analyzer;
 import com.vk.api.sdk.objects.messages.Action;
 import com.vk.api.sdk.objects.messages.Message;
 import com.vk.api.sdk.objects.users.UserXtrCounters;
-import data.ChatUsersActivity;
+import model.ChatUsersActivity;
 import operator.VkChatOperator;
 
 import java.util.*;
